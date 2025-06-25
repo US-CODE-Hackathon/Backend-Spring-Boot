@@ -29,13 +29,14 @@ jobs:
           username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
           source: "build/libs/demo-0.0.1-SNAPSHOT.jar"
-          target: "/home/dev.yeachan/build/libs"
+          target: "/home/dev.yeachan/build/libs/"
 
-      - name: Restart Spring Boot App on GCP VM
+      - name: Run Spring Boot app manually on GCP VM
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
           username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
-            sudo systemctl restart spring
+            pkill -f 'java -jar' || true
+            nohup java -jar /home/dev.yeachan/build/libs/demo-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
