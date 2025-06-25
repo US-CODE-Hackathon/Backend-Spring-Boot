@@ -24,7 +24,7 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
-          username: ${{ secrets.GCP_VM_USER }}
+          username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
           source: "build/libs/your-app.jar"
           target: "/home/${{ secrets.GCP_VM_USER }}/"
@@ -33,8 +33,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
-          username: ${{ secrets.GCP_VM_USER }}
+          username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
-            pkill -f your-app.jar || true
-            nohup java -jar your-app.jar > app.log 2>&1 &
+            pkill -f demo.jar || true
+            nohup java -jar demo.jar > app.log 2>&1 &
