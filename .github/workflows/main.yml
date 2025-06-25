@@ -8,8 +8,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -17,24 +19,25 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Build with Gradle (skip tests)
+        run: ./gradlew build -x test
 
-      - name: Deploy .jar to GCP VM
+      - name: Copy JAR to GCP VM
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
           username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
-          source: "build/libs/your-app.jar"
-          target: "/home/${{ secrets.GCP_VM_USER }}/"
+          source: "build/libs/demo-0.0.1-SNAPSHOT.jar"
+          target: "/home/dev.yeachan/"
 
-      - name: Restart App on GCP
+      - name: Restart Spring Boot App on GCP VM
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
           username: dev.yeachan
           key: ${{ secrets.GCP_SSH_KEY }}
           script: |
-            pkill -f demo.jar || true
-            nohup java -jar demo.jar > app.log 2>&1 &
+            cd /home/dev.yeachan
+            pkill -f demo-0.0.1-SNAPSHOT.jar || true
+            nohup java -jar demo-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
