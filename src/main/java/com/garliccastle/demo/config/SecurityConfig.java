@@ -15,11 +15,14 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://yeachan.modie.site")
+                .allowedOrigins(
+                        "https://us-hackathon-3db73.firebaseapp.com"
+                )
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
+
 
     // Spring Security CORS 설정
     @Bean
