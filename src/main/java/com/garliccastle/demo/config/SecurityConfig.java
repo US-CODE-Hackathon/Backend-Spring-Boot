@@ -18,7 +18,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://us-hackathon-3db73.firebaseapp.com"));
+        config.setAllowedOrigins(List.of("https://us-hackathon-3db73.firebaseapp.com", "https://us-hackathon-3db73.firebaseapp.com", "http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // 반드시 true여야 쿠키 허용
