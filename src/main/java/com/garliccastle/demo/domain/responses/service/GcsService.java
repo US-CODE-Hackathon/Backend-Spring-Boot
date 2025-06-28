@@ -10,18 +10,21 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 @Service
 @RequiredArgsConstructor
 public class GcsService {
 
-    private static String bucketName = "usus-bucket";
+    private static final String BUCKET_NAME = "usus-bucket";
+    private final ResourceLoader resourceLoader;
 
     public String uploadObject(GCSRequest gcsRequest) throws IOException {
-        String keyFileName = "gcp-key.json";
-        InputStream keyFile = ResourceUtils.getURL("classpath:" + keyFileName).openStream();
+        // ✅ 외부 키 파일 위치 설정 (application.yml에서 불러오도록 개선 가능)
+        Resource resource = resourceLoader.getResource("file:/app/secrets/gcp-key.json");
+        InputStream keyFile = resource.getInputStream();
 
         Storage storage = StorageOptions.newBuilder()
                 .setCredentials(GoogleCredentials.fromStream(keyFile))
@@ -30,15 +33,16 @@ public class GcsService {
 
         String fileName = gcsRequest.getFile().getOriginalFilename();
 
-        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, fileName)
-                .setContentType(gcsRequest.getFile().getContentType()).build();
+        BlobInfo blobInfo = BlobInfo.newBuilder(BUCKET_NAME, fileName)
+                .setContentType(gcsRequest.getFile().getContentType())
+                .build();
 
         storage.create(blobInfo, gcsRequest.getFile().getInputStream());
 
         URL signedUrl = storage.signUrl(
                 blobInfo,
-                7, TimeUnit.DAYS, // 최대 7일
-                Storage.SignUrlOption.withV4Signature() // V4 방식
+                7, TimeUnit.DAYS,
+                Storage.SignUrlOption.withV4Signature()
         );
 
         return signedUrl.toString();
