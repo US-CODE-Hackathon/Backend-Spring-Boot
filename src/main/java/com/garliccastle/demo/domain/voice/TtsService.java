@@ -17,7 +17,7 @@ public class TtsService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseEntity<ByteArrayResource> fetchTtsAudio(String text) {
-        String externalUrl = "http://34.64.140.206:8000/tts"; // 외부 TTS API 주소
+        String externalUrl = "http://10.178.0.9:8000/tts"; // 외부 TTS API 주소
 
         // 1. 요청 헤더와 바디 구성
         HttpHeaders headers = new HttpHeaders();
