@@ -17,7 +17,10 @@ public class WebConfig {
         config.setAllowedOrigins(List.of(
                 "https://us-hackathon-3db73.firebaseapp.com",
                 "https://us-hackathon-3db73.web.app/",
-                "http://localhost:5173"
+                "https://us-hackathon-3db73.web.app",
+                "http://localhost:5173",
+                "http://34.64.140.206:8000/",
+                "http://34.64.140.206:8000"
         ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
