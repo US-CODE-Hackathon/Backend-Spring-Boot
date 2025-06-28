@@ -9,7 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +33,13 @@ public class Conversations {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    private LocalDate startedAt;
+    private LocalDateTime startedAt;
+
+    @PrePersist
+    @PreUpdate
+    public void updateTimestamp() {
+        this.startedAt = LocalDateTime.now();
+    }
 
     private LocalDate endedAt;
 
