@@ -14,6 +14,7 @@ public class EmotionResponseDto {
     private Long emotionalReportId;
     private String imageUrl;
     private String emotion;
+    private String title;
     private String aiSummary;
     private boolean isFirst;
     private String date;
@@ -24,6 +25,7 @@ public class EmotionResponseDto {
                 report.getImageUrl(),
                 report.getSentiment(),
                 report.getSummary(),
+                report.getTitle(),
                 report.isFirst(),
                 report.getCreatedAt().toLocalDate().toString() // yyyy-MM-dd 형식
         );
