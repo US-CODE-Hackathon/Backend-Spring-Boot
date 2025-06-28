@@ -10,15 +10,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 @Service
 @RequiredArgsConstructor
 public class GcsService {
-    @Value("${spring.cloud.gcp.storage.bucket}")
-    private String bucketName;
+
+    private static String bucketName = "usus-bucket";
 
     public String uploadObject(GCSRequest gcsRequest) throws IOException {
         String keyFileName = "liquid-braid-463809-s5-5b51278c8e35.json";
