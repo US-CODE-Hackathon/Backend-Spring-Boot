@@ -20,7 +20,7 @@ public class GcsService {
     private static String bucketName = "usus-bucket";
 
     public String uploadObject(GCSRequest gcsRequest) throws IOException {
-        String keyFileName = "liquid-braid-463809-s5-5b51278c8e35.json";
+        String keyFileName = "gcp-key.json";
         InputStream keyFile = ResourceUtils.getURL("classpath:" + keyFileName).openStream();
 
         Storage storage = StorageOptions.newBuilder()
