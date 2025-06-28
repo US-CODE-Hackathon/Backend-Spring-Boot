@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
 public class TtsController {
     private final TtsService ttsService;
-
     /**
      * 텍스트를 받아서 TTS 변환 후 mp3 파일로 반환
      */
-
     @PostMapping("/tts")
     public ResponseEntity<ByteArrayResource> convertTextToSpeech(TtsDto ttsDto) {
         return ttsService.fetchTtsAudio(ttsDto.getText());
