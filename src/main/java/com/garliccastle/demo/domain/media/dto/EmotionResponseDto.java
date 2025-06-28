@@ -24,8 +24,8 @@ public class EmotionResponseDto {
                 report.getEmotionalReportId(),
                 report.getImageUrl(),
                 report.getSentiment(),
-                report.getSummary(),
                 report.getTitle(),
+                report.getSummary(),
                 report.isFirst(),
                 report.getCreatedAt().toLocalDate().toString() // yyyy-MM-dd 형식
         );
