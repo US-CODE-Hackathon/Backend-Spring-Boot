@@ -17,7 +17,7 @@ public class TtsController {
      * 텍스트를 받아서 TTS 변환 후 mp3 파일로 반환
      */
 
-    @GetMapping("/tts")
+    @PostMapping("/tts")
     public ResponseEntity<ByteArrayResource> convertTextToSpeech(TtsDto ttsDto) {
         return ttsService.fetchTtsAudio(ttsDto.getText());
     }
