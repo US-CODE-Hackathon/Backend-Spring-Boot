@@ -1,53 +1,56 @@
 package com.garliccastle.demo.domain.voice;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TtsService {
+
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public File requestTtsAndSaveToFile(String text) throws IOException {
-        String url = "http://10.178.0.9:8000/tts"; // 실제 TTS API 주소로 변경
+    public ResponseEntity<ByteArrayResource> fetchTtsAudio(String text) {
+        String externalUrl = "http://34.64.140.206:8000/tts"; // 실제 TTS API 주소
 
-        // 1. 헤더 설정
+        // 1. 요청 헤더 및 바디 구성
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setAccept(List.of(MediaType.APPLICATION_OCTET_STREAM, MediaType.ALL));
 
-        // 2. 요청 본문 설정
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("text", text);
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
-        // 3. 요청 보내고 파일(bytes)로 받기
+        // 2. 요청
         ResponseEntity<byte[]> response = restTemplate.exchange(
-                url,
+                externalUrl,
                 HttpMethod.POST,
                 request,
                 byte[].class
         );
 
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException("TTS 요청 실패: " + response.getStatusCode());
+        // 3. 에러 처리 및 변환
+        byte[] mp3Bytes = response.getBody();
+        if (response.getStatusCode() != HttpStatus.OK || mp3Bytes == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
-        // 4. 임시 파일 저장
-        byte[] audioBytes = response.getBody();
-        File tempMp3 = Files.createTempFile("tts-result-", ".mp3").toFile();
+        ByteArrayResource resource = new ByteArrayResource(mp3Bytes);
 
-        try (FileOutputStream fos = new FileOutputStream(tempMp3)) {
-            fos.write(audioBytes);
-        }
+        // 4. 응답 헤더 구성
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        responseHeaders.setContentLength(mp3Bytes.length);
+        responseHeaders.setContentDisposition(ContentDisposition.inline().filename("tts.mp3").build());
 
-        return tempMp3; // 혹은 URL로 제공할 수도 있음
+        return new ResponseEntity<>(resource, responseHeaders, HttpStatus.OK);
     }
 }
