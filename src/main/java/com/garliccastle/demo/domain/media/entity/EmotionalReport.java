@@ -24,7 +24,7 @@ public class EmotionalReport {
 
     private Long conversationId;
 
-    @Column(length = 1000)
+    @Column(length = 2048)
     private String imageUrl;
 
     private String title;
