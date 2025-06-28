@@ -32,6 +32,7 @@ public class EmotionalReport {
     private String summary;
 
     private LocalDateTime createdAt;
+    private String time;
 
     @Column(name = "is_first")
     private boolean isFirst;

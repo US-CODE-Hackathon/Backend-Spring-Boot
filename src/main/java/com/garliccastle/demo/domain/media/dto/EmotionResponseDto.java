@@ -18,6 +18,7 @@ public class EmotionResponseDto {
     private String aiSummary;
     private boolean isFirst;
     private String date;
+    private String time;
 
     public static EmotionResponseDto from(EmotionalReport report) {
         return new EmotionResponseDto(
@@ -27,6 +28,7 @@ public class EmotionResponseDto {
                 report.getTitle(),
                 report.getSummary(),
                 report.isFirst(),
+                report.getTime(),
                 report.getCreatedAt().toLocalDate().toString() // yyyy-MM-dd 형식
         );
     }
