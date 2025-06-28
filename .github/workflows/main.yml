@@ -41,10 +41,16 @@ jobs:
             pkill -f 'java -jar' || true
             echo '${{ secrets.GCP_CREDENTIAL_JSON }}' > /home/dev.yeachan/gcp-key.json
             nohup java -jar /home/dev.yeachan/build/libs/demo-0.0.1-SNAPSHOT.jar \
-              --spring.datasource.url="${{ secrets.SPRING_DATASOURCE_URL }}" \
-              --spring.datasource.username="${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
-              --spring.datasource.password="${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
-              --spring.cloud.gcp.storage.credentials.location=/home/dev.yeachan/gcp-key.json \
-              --spring.cloud.gcp.storage.project-id="${{ secrets.SPRING_STORAGE_PROJECT_ID }}" \
-              --spring.cloud.gcp.storage.bucket="${{ secrets.SPRING_STORAGE_BUCKET }}" \
-              > /home/dev.yeachan/app.log 2>&1 < /dev/null &
+                --spring.datasource.url="$SPRING_DATASOURCE_URL" \
+                --spring.datasource.username="$SPRING_DATASOURCE_USERNAME" \
+                --spring.datasource.password="$SPRING_DATASOURCE_PASSWORD" \
+                --spring.cloud.gcp.storage.credentials.location=/home/dev.yeachan/gcp-key.json \
+                --spring.cloud.gcp.storage.project-id="$SPRING_STORAGE_PROJECT_ID" \
+                --spring.cloud.gcp.storage.bucket="$SPRING_STORAGE_BUCKET" \
+                > /home/dev.yeachan/app.log 2>&1 < /dev/null &
+            env:
+              SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+              SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+              SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+              SPRING_STORAGE_PROJECT_ID: ${{ secrets.SPRING_STORAGE_PROJECT_ID }}
+              SPRING_STORAGE_BUCKET: ${{ secrets.SPRING_STORAGE_BUCKET }}
