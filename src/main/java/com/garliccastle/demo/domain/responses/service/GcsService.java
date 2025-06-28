@@ -23,7 +23,7 @@ public class GcsService {
 
     public String uploadObject(GCSRequest gcsRequest) throws IOException {
         // ✅ 외부 키 파일 위치 설정 (application.yml에서 불러오도록 개선 가능)
-        Resource resource = resourceLoader.getResource("file:/app/secrets/gcpkey.json");
+        Resource resource = resourceLoader.getResource("file:/app/gcpkey.json");
         InputStream keyFile = resource.getInputStream();
 
         Storage storage = StorageOptions.newBuilder()
