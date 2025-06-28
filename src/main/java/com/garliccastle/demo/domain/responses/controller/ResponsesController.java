@@ -8,6 +8,7 @@ import com.garliccastle.demo.domain.responses.dto.GCSRequest;
 import com.garliccastle.demo.domain.responses.dto.ResponseSaveRequest;
 import com.garliccastle.demo.domain.responses.service.GcsService;
 import com.garliccastle.demo.domain.responses.service.ResponsesService;
+import com.garliccastle.demo.domain.summary.service.AnalysisSummaryService;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class ResponsesController {
     private final ResponsesService responsesService;
     private final EmotionalReportRepository emotionalReportRepository;
     private final GcsService gcsService;
+    private final AnalysisSummaryService analysisSummaryService;
 
     @PostMapping("/question")
     public ResponseEntity<ApiResponse<Void>> saveEmotionResponse(
@@ -48,6 +50,7 @@ public class ResponsesController {
                 .build();
 
         emotionalReportRepository.save(emotionalReport);
+        analysisSummaryService.updateAiWeekSummaryAnalyze();
 
         return ResponseEntity.ok(ApiResponse.success());
     }
