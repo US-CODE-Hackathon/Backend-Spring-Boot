@@ -57,4 +57,4 @@ jobs:
               -e SPRING_CLOUD_GCP_STORAGE_CREDENTIALS_LOCATION="file:/app/gcpkey.json" \
               -e SPRING_CLOUD_GCP_STORAGE_BUCKET="${{ secrets.SPRING_CLOUD_GCP_STORAGE_BUCKET }}" \
               -e GCP_CREDENTIAL_JSON="/app/gcpkey.json" \
-              ${{ secrets.DOCKERHUB_USERNAME }}/springboot-app:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/springboot:latest
