@@ -29,7 +29,7 @@ public class ResponsesService {
     private final ConversationsRepository conversationsRepository;
     private final RestTemplate restTemplate;
 
-    private static final String AI_ANALYSIS_URL = "http://10.178.0.3:8000/docs";
+    private static final String AI_ANALYSIS_URL = "http://10.178.0.3:8000/summary";
 
     public void saveResponse(ResponseSaveRequest request) {
         Conversations conversation = conversationsRepository.findById(request.getConversationId())
