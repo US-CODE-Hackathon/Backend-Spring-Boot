@@ -40,7 +40,7 @@ jobs:
             docker rm springboot-container || true
             docker pull ${{ secrets.DOCKER_USERNAME }}/springboot:latest
             docker run -d --name springboot-container -p 8080:8080 \
-              -v /home/dev.yeachan/gcpkey.json:/app/gcp-key.json \
+              -v /home/dev.yeachan/gcpkey.json:/app/gcpkey.json \
               -e SPRING_DATASOURCE_URL="${{ secrets.SPRING_DATASOURCE_URL }}" \
               -e SPRING_DATASOURCE_USERNAME="${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
               -e SPRING_DATASOURCE_PASSWORD="${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
