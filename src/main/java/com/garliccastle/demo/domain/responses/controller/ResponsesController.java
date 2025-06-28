@@ -31,7 +31,7 @@ public class ResponsesController {
         return ResponseEntity.ok(ApiResponse.success());
     }
 
-    @PostMapping("/api/gcs/upload")
+    @PostMapping("/photo")
     public ResponseEntity<ApiResponse<Void>> objectUpload(GCSRequest gcsRequest) throws IOException {
 
         String url = gcsService.uploadObject(gcsRequest);
