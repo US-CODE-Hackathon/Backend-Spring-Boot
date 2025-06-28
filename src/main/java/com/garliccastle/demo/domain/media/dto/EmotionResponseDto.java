@@ -28,8 +28,8 @@ public class EmotionResponseDto {
                 report.getTitle(),
                 report.getSummary(),
                 report.isFirst(),
-                report.getTime(),
-                report.getCreatedAt().toLocalDate().toString() // yyyy-MM-dd 형식
+                report.getCreatedAt().toLocalDate().toString() ,// yyyy-MM-dd 형식
+                report.getTime()
         );
     }
 }
