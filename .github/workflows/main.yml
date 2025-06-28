@@ -52,7 +52,7 @@ jobs:
               -e SPRING_JPA_DATABASE_PLATFORM="${{ secrets.SPRING_JPA_DATABASE_PLATFORM }}" \
               -e SPRING_WEB_RESOURCES_ADD_MAPPINGS="${{ secrets.SPRING_WEB_RESOURCES_ADD_MAPPINGS }}" \
               -e SPRING_CLOUD_GCP_STORAGE_PROJECT_ID="${{ secrets.SPRING_CLOUD_GCP_STORAGE_PROJECT_ID }}" \
-              -e SPRING_CLOUD_GCP_STORAGE_CREDENTIALS_LOCATION="file:/app/gcpkey.json" \
+              -e SPRING_CLOUD_GCP_STORAGE_CREDENTIALS_LOCATION="/app/gcpkey.json" \
               -e SPRING_CLOUD_GCP_STORAGE_BUCKET="${{ secrets.SPRING_CLOUD_GCP_STORAGE_BUCKET }}" \
               -e GCP_CREDENTIAL_JSON="/app/gcpkey.json" \
               ${{ secrets.DOCKER_USERNAME }}/springboot:latest
