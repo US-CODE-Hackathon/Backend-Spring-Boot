@@ -39,15 +39,24 @@ jobs:
             docker stop springboot-container || true
             docker rm springboot-container || true
             docker pull ${{ secrets.DOCKER_USERNAME }}/springboot:latest
+            - name: Run Spring Boot container
+          run: |
             docker run -d \
               --name springboot-container \
               -p 8080:8080 \
               -v /home/dev.yeachan/gcpkey.json:/app/gcpkey.json \
-              -e GCP_CREDENTIAL_JSON=/app/gcpkey.json \
-              -e SPRING_PROFILES_ACTIVE=dev \
-              -e SPRING_DATASOURCE_URL=${{ secrets.SPRING_DATASOURCE_URL }} \
-              -e SPRING_DATASOURCE_USERNAME=${{ secrets.SPRING_DATASOURCE_USERNAME }} \
-              -e SPRING_DATASOURCE_PASSWORD=${{ secrets.SPRING_DATASOURCE_PASSWORD }} \
-              -e SPRING_STORAGE_PROJECT_ID=${{ secrets.SPRING_STORAGE_PROJECT_ID }} \
-              -e SPRING_STORAGE_BUCKET=${{ secrets.SPRING_STORAGE_BUCKET }} \
-              ${{ secrets.DOCKER_USERNAME }}/springboot:latest
+              -e SPRING_DATASOURCE_URL="${{ secrets.SPRING_DATASOURCE_URL }}" \
+              -e SPRING_DATASOURCE_USERNAME="${{ secrets.SPRING_DATASOURCE_USERNAME }}" \
+              -e SPRING_DATASOURCE_PASSWORD="${{ secrets.SPRING_DATASOURCE_PASSWORD }}" \
+              -e SPRING_DATASOURCE_DRIVER_CLASS_NAME="${{ secrets.SPRING_DATASOURCE_DRIVER_CLASS_NAME }}" \
+              -e SPRING_JPA_HIBERNATE_DDL_AUTO="${{ secrets.SPRING_JPA_HIBERNATE_DDL_AUTO }}" \
+              -e SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION="${{ secrets.SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION }}" \
+              -e SPRING_JPA_SHOW_SQL="${{ secrets.SPRING_JPA_SHOW_SQL }}" \
+              -e SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL="${{ secrets.SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL }}" \
+              -e SPRING_JPA_DATABASE_PLATFORM="${{ secrets.SPRING_JPA_DATABASE_PLATFORM }}" \
+              -e SPRING_WEB_RESOURCES_ADD_MAPPINGS="${{ secrets.SPRING_WEB_RESOURCES_ADD_MAPPINGS }}" \
+              -e SPRING_CLOUD_GCP_STORAGE_PROJECT_ID="${{ secrets.SPRING_CLOUD_GCP_STORAGE_PROJECT_ID }}" \
+              -e SPRING_CLOUD_GCP_STORAGE_CREDENTIALS_LOCATION="file:/app/gcpkey.json" \
+              -e SPRING_CLOUD_GCP_STORAGE_BUCKET="${{ secrets.SPRING_CLOUD_GCP_STORAGE_BUCKET }}" \
+              -e GCP_CREDENTIAL_JSON="/app/gcpkey.json" \
+              ${{ secrets.DOCKERHUB_USERNAME }}/springboot-app:latest
