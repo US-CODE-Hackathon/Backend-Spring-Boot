@@ -4,6 +4,7 @@ import com.garliccastle.demo.domain.conversations.entity.Conversations;
 import com.garliccastle.demo.domain.conversations.repository.ConversationsRepository;
 import com.garliccastle.demo.domain.prompts.entity.Prompts;
 import com.garliccastle.demo.domain.prompts.repository.PromptsRepository;
+import com.garliccastle.demo.domain.responses.dto.EmotionAnalysisResponseDto;
 import com.garliccastle.demo.domain.responses.dto.QuestionAnswerPairDto;
 import com.garliccastle.demo.domain.responses.dto.ResponseSaveRequest;
 import com.garliccastle.demo.domain.responses.entity.Responses;
@@ -47,7 +48,7 @@ public class ResponsesService {
         responsesRepository.save(response);
     }
 
-    public void analyzeResponses(Long conversationId) {
+    public EmotionAnalysisResponseDto analyzeResponses(Long conversationId) {
         List<Responses> responses = responsesRepository.findAllByConversation_ConversationId(conversationId);
 
         List<QuestionAnswerPairDto> payload = responses.stream()
@@ -66,16 +67,17 @@ public class ResponsesService {
 
         // 전송 및 응답 처리
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
+            ResponseEntity<EmotionAnalysisResponseDto> response = restTemplate.exchange(
                     AI_ANALYSIS_URL,
                     HttpMethod.POST,
                     requestEntity,
-                    String.class
+                    EmotionAnalysisResponseDto.class
             );
-
+            return response.getBody();
         } catch (RestClientException e) {
             System.err.println("AI 분석 서버 호출 실패: " + e.getMessage());
         }
+        return null;
     }
 
 }
