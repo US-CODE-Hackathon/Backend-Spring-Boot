@@ -1,38 +1,37 @@
-package com.garliccastle.demo.config;
+package app.sigorotalk.backend.config;
 
-import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
-public class WebConfig {
-    // Spring Security 전용 CORS 설정
+public class CorsConfig {
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+        // 허용할 Origin 목록
         config.setAllowedOrigins(List.of(
-                "https://us-hackathon-3db73.firebaseapp.com",
-                "https://us-hackathon-3db73.web.app/",
-                "https://us-hackathon-3db73.web.app",
-                "http://localhost:5173",
-                "http://34.64.140.206:8000/",
-                "http://34.64.140.206:8000"
+                "https://coffeebara-front.web.app",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000"
         ));
+        // 허용할 HTTP 메서드
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        config.setAllowCredentials(true); // 쿠키 전송을 위한 설정
+        // 허용할 헤더
+        config.setAllowedHeaders(List.of("*"));
+        // 인증 정보(쿠키, Authorization 헤더) 허용
+        config.setAllowCredentials(true);
+        // preflight 캐싱 시간 (초)
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 모든 경로에 대해 CORS 적용
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 }
